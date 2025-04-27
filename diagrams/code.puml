@@ -1,0 +1,48 @@
+@startuml ServiceLayerClassDiagram
+
+title Тёплый дом - диаграмма классов компонента Device Service Layer
+
+class DeviceService {
+  + createDevice()
+  + updateDevice()
+  + getDevice()
+  + listDevices()
+  + deleteDevice()
+}
+
+class LocationService {
+  + createLocation()
+  + updateLocation()
+  + getLocation()
+  + listLocations()
+  + deleteLocation()
+}
+
+class Device {
+  + int id
+  + string name
+  + DeviceType type
+  + DeviceStatus status
+}
+
+class Location {
+  + int id
+  + string name
+  + string coordinates
+  + List<Device> devices
+  + addDevice()
+  + removeDevice()
+}
+
+class DeviceFilter {
+  + int locationId
+  + DeviceType type
+}
+
+DeviceService --> Device : manages
+DeviceService --> DeviceFilter : uses
+LocationService --> Location : manages
+
+Location "1" -- "0..*" Device : has
+
+@enduml

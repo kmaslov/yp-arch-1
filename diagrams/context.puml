@@ -1,10 +1,10 @@
 @startuml
 
-title Тёплый дом
+title Тёплый дом - диаграмма контекста as-is
 
 top to bottom direction
 
-!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
 Person(admin, "Администратор", "Администратор системы")
 Person(user, "Пользователь", "Пользователь системы")

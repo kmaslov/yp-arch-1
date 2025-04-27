@@ -1,0 +1,58 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Тёплый дом - диаграмма контейнеров to-be
+
+Person(admin, "Администратор", "Администратор системы")
+Person(user, "Пользователь", "Пользователь системы")
+System(system, "Экосистема Тёплый дом")
+
+Container_Boundary(system, "Экосистема Тёплый дом") {
+  Container(WebApp, "Веб-приложение пользователя", "React", "Веб-приложение для конечных пользователей экосистемы")
+  Container(MobileApp, "Мобильное приложение", "Kotlin, Swift", "Мобильное приложение для конечных пользователей экосистемы")
+  Container(AdminApp, "Веб-приложение администратора", "React", "Веб-приложение для администраторов экосистемы")
+  Container(WebApi, "Web API", "Go", "API")
+  Container(MobileApi, "Mobile API", "Go", "API")
+  Container(AdminApi, "Admin API", "Go", "API")
+  Container(AuthService, "Сервис аутентификации", "Go", "Осуществляет регистрацию и аутентификацию пользователей")
+  Container(PaymentService, "Платежный сервис", "Go", "Проводит платежи пользователей")
+  Container(DeviceIntegrationService, "Сервис интеграции с устройствами", "Go", "Отвечает за непосредственное взаимодействие с устройствами")
+  Container(DeviceManagementService, "Сервис управления устройствами", "Go", "Осуществляет регистрацию, управление устройствами")
+  Container(UserManagementService, "Сервис администрирования", "Go", "Осуществляет управление аккаунтами, предоставляет отчеты")
+  ContainerDb(TelemetryDatabase, "База телеметрии устройств", "Timescale", "Хранит телеметрию устройств")
+  ContainerDb(MainDatabase, "Основная база данных", "PostgreSQL", "Хранит основные данные экосистемы")
+}
+
+System_Ext(devices, "Умные устройства")
+System_Ext(bank, "Внешние сервисы электронных платежей")
+System_Ext(notifications, "Сервис нотификаций")
+
+Rel(admin, AdminApp, "Uses")
+Rel(user, WebApp, "Uses")
+Rel(user, MobileApp, "Uses")
+Rel(AdminApp, AdminApi, "Uses", "HTTPS")
+Rel(AdminApi, AuthService, "Uses", "HTTP")
+Rel(AdminApi, UserManagementService, "Uses", "HTTP")
+Rel(AdminApi, DeviceManagementService, "Uses", "HTTP")
+Rel(WebApp, WebApi, "Uses", "HTTPS")
+Rel(MobileApp, MobileApi, "Uses", "HTTPS")
+Rel(notifications, MobileApp, "Отправляет нотификации")
+Rel(WebApi, AuthService, "Uses", "HTTP")
+Rel(WebApi, DeviceManagementService, "Uses", "HTTP")
+Rel(WebApi, PaymentService, "Uses", "HTTP")
+Rel(MobileApi, AuthService, "Uses", "HTTP")
+Rel(MobileApi, DeviceManagementService, "Uses", "HTTP")
+Rel(DeviceManagementService, DeviceIntegrationService, "Отправляет команды на устройства", "HTTP")
+Rel(DeviceManagementService, MainDatabase, "Сохраняет и читает информацию об устройствах", "")
+Rel(DeviceManagementService, TelemetryDatabase, "Читает показатели устройств", "")
+Rel(DeviceManagementService, notifications, "Отправляет нотификации", "HTTPS")
+Rel(PaymentService, MainDatabase, "Сохраняет и читает информацию о платежах")
+BiRel(PaymentService, bank, "Обменивается платежными данными", "HTTPS")
+Rel(AuthService, MainDatabase, "Сохраняет и читает данные о пользователях", "")
+Rel(UserManagementService, MainDatabase, "Сохраняет и читает данные для административных функций", "")
+BiRel(DeviceIntegrationService, devices, "Взаимодействует с устройствами", "MQTT")
+Rel(DeviceIntegrationService, TelemetryDatabase, "Сохраняет телеметрию устройств", "")
+Rel(DeviceIntegrationService, MainDatabase, "Читает информацию об устройствах", "")
+
+@enduml
