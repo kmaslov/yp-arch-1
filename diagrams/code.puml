@@ -1,6 +1,6 @@
 @startuml ServiceLayerClassDiagram
 
-title Тёплый дом - диаграмма классов компонента Device Service Layer
+title РўС‘РїР»С‹Р№ РґРѕРј - РґРёР°РіСЂР°РјРјР° РєР»Р°СЃСЃРѕРІ РєРѕРјРїРѕРЅРµРЅС‚Р° Device Service Layer
 
 class DeviceService {
   + createDevice()

@@ -2,29 +2,29 @@
 
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Тёплый дом - диаграмма компонентов микросервиса управления устройствами
+title РўС‘РїР»С‹Р№ РґРѕРј - РґРёР°РіСЂР°РјРјР° РєРѕРјРїРѕРЅРµРЅС‚РѕРІ РјРёРєСЂРѕСЃРµСЂРІРёСЃР° СѓРїСЂР°РІР»РµРЅРёСЏ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё
 
-Container_Boundary(system, "Экосистема Тёплый дом") {
+Container_Boundary(system, "Р­РєРѕСЃРёСЃС‚РµРјР° РўС‘РїР»С‹Р№ РґРѕРј") {
   Container(WebApi, "Web API", "Go", "API")
   Container(MobileApi, "Mobile API", "Go", "API")
   Container(AdminApi, "Admin API", "Go", "API")
-  Container(DeviceManagementService, "Сервис управления устройствами", "Go", "Осуществляет регистрацию, управление устройствами")
-  Container(DeviceIntegrationService, "Сервис интеграции с устройствами", "Go", "Отвечает за непосредственное взаимодействие с устройствами")
-  ContainerDb(TelemetryDatabase, "База телеметрии устройств", "Timescale", "Хранит телеметрию устройств")
-  ContainerDb(MainDatabase, "Основная база данных", "PostgreSQL", "Хранит основные данные экосистемы")
+  Container(DeviceManagementService, "РЎРµСЂРІРёСЃ СѓРїСЂР°РІР»РµРЅРёСЏ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё", "Go", "РћСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ СЂРµРіРёСЃС‚СЂР°С†РёСЋ, СѓРїСЂР°РІР»РµРЅРёРµ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё")
+  Container(DeviceIntegrationService, "РЎРµСЂРІРёСЃ РёРЅС‚РµРіСЂР°С†РёРё СЃ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё", "Go", "РћС‚РІРµС‡Р°РµС‚ Р·Р° РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕРµ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё")
+  ContainerDb(TelemetryDatabase, "Р‘Р°Р·Р° С‚РµР»РµРјРµС‚СЂРёРё СѓСЃС‚СЂРѕР№СЃС‚РІ", "Timescale", "РҐСЂР°РЅРёС‚ С‚РµР»РµРјРµС‚СЂРёСЋ СѓСЃС‚СЂРѕР№СЃС‚РІ")
+  ContainerDb(MainDatabase, "РћСЃРЅРѕРІРЅР°СЏ Р±Р°Р·Р° РґР°РЅРЅС‹С…", "PostgreSQL", "РҐСЂР°РЅРёС‚ РѕСЃРЅРѕРІРЅС‹Рµ РґР°РЅРЅС‹Рµ СЌРєРѕСЃРёСЃС‚РµРјС‹")
 }
 
 System_Ext(Notifications, "Notifications Service")
 
-Container(DeviceManagementService, "Сервис управления устройствами", "Go", "Осуществляет регистрацию, управление устройствами") {
-  Component(DeviceController, "Device Controller", "Отвечает за регистрацию и редактирование параметров устройств")
-  Component(DeviceStateController, "Device State Controller", "Отвечает за отображение и управление состоянием устройств")
-  Component(ServiceLayer, "Device Service Layer", "CRUD Бизнес-логика устройств")
-  Component(CommandHandler, "Command Handler", "Отправляет команды в сервис интеграции")
-  Component(DeviceStateServiceLayer, "Device State Service Layer", "Бизнес-логика отображения состояния и истории показаний устройств")
-  Component(MainRepositoryLayer, "Main Repository Layer", "Доступ к основной БД")
-  Component(TelemetryRepositoryLayer, "Telemetry Repository Layer", "Доступ к БД телеметрии")
-  ComponentQueue(DeviceStateQueue, "Device State Queue", "Очередь сообщений с устройств")
+Container(DeviceManagementService, "РЎРµСЂРІРёСЃ СѓРїСЂР°РІР»РµРЅРёСЏ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё", "Go", "РћСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ СЂРµРіРёСЃС‚СЂР°С†РёСЋ, СѓРїСЂР°РІР»РµРЅРёРµ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё") {
+  Component(DeviceController, "Device Controller", "РћС‚РІРµС‡Р°РµС‚ Р·Р° СЂРµРіРёСЃС‚СЂР°С†РёСЋ Рё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂРѕРІ СѓСЃС‚СЂРѕР№СЃС‚РІ")
+  Component(DeviceStateController, "Device State Controller", "РћС‚РІРµС‡Р°РµС‚ Р·Р° РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ Рё СѓРїСЂР°РІР»РµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёРµРј СѓСЃС‚СЂРѕР№СЃС‚РІ")
+  Component(ServiceLayer, "Device Service Layer", "CRUD Р‘РёР·РЅРµСЃ-Р»РѕРіРёРєР° СѓСЃС‚СЂРѕР№СЃС‚РІ")
+  Component(CommandHandler, "Command Handler", "РћС‚РїСЂР°РІР»СЏРµС‚ РєРѕРјР°РЅРґС‹ РІ СЃРµСЂРІРёСЃ РёРЅС‚РµРіСЂР°С†РёРё")
+  Component(DeviceStateServiceLayer, "Device State Service Layer", "Р‘РёР·РЅРµСЃ-Р»РѕРіРёРєР° РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ Рё РёСЃС‚РѕСЂРёРё РїРѕРєР°Р·Р°РЅРёР№ СѓСЃС‚СЂРѕР№СЃС‚РІ")
+  Component(MainRepositoryLayer, "Main Repository Layer", "Р”РѕСЃС‚СѓРї Рє РѕСЃРЅРѕРІРЅРѕР№ Р‘Р”")
+  Component(TelemetryRepositoryLayer, "Telemetry Repository Layer", "Р”РѕСЃС‚СѓРї Рє Р‘Р” С‚РµР»РµРјРµС‚СЂРёРё")
+  ComponentQueue(DeviceStateQueue, "Device State Queue", "РћС‡РµСЂРµРґСЊ СЃРѕРѕР±С‰РµРЅРёР№ СЃ СѓСЃС‚СЂРѕР№СЃС‚РІ")
 }
 
 Rel(AdminApi, DeviceController, "Uses")
