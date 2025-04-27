@@ -1,6 +1,6 @@
 @startuml ServiceLayerClassDiagram
 
-title ¸ןכי המל - ER הטאדנאללא
+title Тёплый дом - ER-диаграмма
 
 entity Device {
   * id : int
