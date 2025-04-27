@@ -1,0 +1,83 @@
+@startuml ServiceLayerClassDiagram
+
+title ¸ןכי המל - ER הטאדנאללא
+
+entity Device {
+  * id : int
+  --
+  * name : string
+  * type_id : int <<FK>>
+  * location_id : int <<FK>>
+  * serial_number : string
+  * created_at : timestamp
+  * last_updated : timestamp
+  * unit : string
+  value : float
+  status : string
+}
+
+entity DeviceType {
+  * id : int
+  --
+  * name : string
+}
+
+entity Location {
+  * id : int
+  --
+  * user_id : int <<FK>>
+  * name : string
+  * coordinates : string
+}
+
+entity TelemetryRecord {
+  * id : int
+  --
+  * device_id : int <<FK>>
+  * received_at : timestamp
+  * value : float
+}
+
+entity User {
+  * id : int
+  --
+  * email : string
+  * last_name : string
+  * first_name : string
+  * created_at : timestamp
+}
+
+entity SubscriptionPlan {
+  * id : int
+  --
+  * name : string
+  * billing_cycle : string
+  * price : decimal
+}
+
+entity Subscription {
+  * id : int
+  --
+  * user_id : int <<FK>>
+  * plan_id : int <<FK>>
+  * start_date : date
+  * end_date : date
+}
+
+entity Payment {
+  * id : int
+  --
+  * subscription_id : int <<FK>>
+  * created_at : timestamp
+  * amount : decimal
+}
+
+Device }o--|| DeviceType
+Device }o-|| Location
+Location }o--|| User
+TelemetryRecord }o--|| Device
+Subscription }o--|| SubscriptionPlan
+Subscription }o--|| User
+Subscription ||--o{ Payment
+
+@enduml
