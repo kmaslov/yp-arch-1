@@ -128,15 +128,6 @@ paths:
 
 components:
   parameters:
-    userId:
-      name: userId
-      in: path
-      description: ID пользователя
-      required: true
-      schema:
-        type: integer
-        format: int32
-
     locationId:
       name: locationId
       in: path
