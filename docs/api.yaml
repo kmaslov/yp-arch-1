@@ -1,0 +1,204 @@
+openapi: 3.0.4
+info:
+  title: Тёплый дом - Device Service API
+  version: 1.0.0
+  description: API для управления устройствами и локациями
+
+paths:
+  /locations:
+    post:
+      tags: [Locations]
+      summary: Создать локацию для текущего пользователя
+      operationId: createLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationCreate'
+      responses:
+        '201':
+          description: Локация создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '400':
+          description: Переданы некорректные параметры
+    get:
+      tags: [Locations]
+      summary: Получить все локации текущего пользователя
+      operationId: getMyLocations
+      responses:
+        '200':
+          description: Список локаций
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+
+
+  /locations/{locationId}:
+    get:
+      tags: [Locations]
+      summary: Получить локацию по ID
+      operationId: getLocationById
+      parameters:
+        - $ref: '#/components/parameters/locationId'
+      responses:
+        '200':
+          description: Локация найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: Локация не найдена
+
+    put:
+      tags: [Locations]
+      summary: Обновить локацию по ID
+      operationId: updateLocationById
+      parameters:
+        - $ref: '#/components/parameters/locationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationUpdate'
+      responses:
+        '200':
+          description: Локация обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '400':
+          description: Переданы некорректные параметры
+
+    delete:
+      tags: [Locations]
+      summary: Удалить локацию
+      operationId: deleteLocation
+      parameters:
+        - $ref: '#/components/parameters/locationId'
+      responses:
+        '204':
+          description: Локация удалена
+        '404':
+          description: Локация не найдена
+
+  /locations/{locationId}/devices/{deviceId}:
+    post:
+      tags: [Locations]
+      summary: Добавить устройство в локацию
+      operationId: addDeviceToLocation
+      parameters:
+        - $ref: '#/components/parameters/locationId'
+        - $ref: '#/components/parameters/deviceId'
+      responses:
+        '200':
+          description: Устройство добавлено в локацию
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: Локация или устройство не найдены
+
+    delete:
+      tags: [Locations]
+      summary: Удалить устройство из локации
+      operationId: removeDeviceFromLocation
+      parameters:
+        - $ref: '#/components/parameters/locationId'
+        - $ref: '#/components/parameters/deviceId'
+      responses:
+        '200':
+          description: Устройство удалено из локации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: Локация или устройство не найдены
+
+components:
+  parameters:
+    userId:
+      name: userId
+      in: path
+      description: ID пользователя
+      required: true
+      schema:
+        type: integer
+        format: int32
+
+    locationId:
+      name: locationId
+      in: path
+      description: ID локации
+      required: true
+      schema:
+        type: integer
+        format: int32
+
+    deviceId:
+      name: deviceId
+      in: path
+      description: ID устройства
+      required: true
+      schema:
+        type: integer
+        format: int32
+
+  schemas:
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        coordinates:
+          type: string
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+      required: [id, name, coordinates]
+
+    LocationCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          type: string
+      required: [name, coordinates]
+
+    LocationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          type: string
+
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+      required: [id, name, type, status]
