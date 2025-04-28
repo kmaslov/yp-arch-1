@@ -1,14 +1,14 @@
 openapi: 3.0.4
 info:
-  title: Тёплый дом - Device Service API
+  title: РўС‘РїР»С‹Р№ РґРѕРј - Device Service API
   version: 1.0.0
-  description: API для управления устройствами и локациями
+  description: API РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СѓСЃС‚СЂРѕР№СЃС‚РІР°РјРё Рё Р»РѕРєР°С†РёСЏРјРё
 
 paths:
   /locations:
     post:
       tags: [Locations]
-      summary: Создать локацию для текущего пользователя
+      summary: РЎРѕР·РґР°С‚СЊ Р»РѕРєР°С†РёСЋ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
       operationId: createLocation
       requestBody:
         required: true
@@ -18,20 +18,20 @@ paths:
               $ref: '#/components/schemas/LocationCreate'
       responses:
         '201':
-          description: Локация создана
+          description: Р›РѕРєР°С†РёСЏ СЃРѕР·РґР°РЅР°
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
         '400':
-          description: Переданы некорректные параметры
+          description: РџРµСЂРµРґР°РЅС‹ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹
     get:
       tags: [Locations]
-      summary: Получить все локации текущего пользователя
+      summary: РџРѕР»СѓС‡РёС‚СЊ РІСЃРµ Р»РѕРєР°С†РёРё С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
       operationId: getMyLocations
       responses:
         '200':
-          description: Список локаций
+          description: РЎРїРёСЃРѕРє Р»РѕРєР°С†РёР№
           content:
             application/json:
               schema:
@@ -43,23 +43,23 @@ paths:
   /locations/{locationId}:
     get:
       tags: [Locations]
-      summary: Получить локацию по ID
+      summary: РџРѕР»СѓС‡РёС‚СЊ Р»РѕРєР°С†РёСЋ РїРѕ ID
       operationId: getLocationById
       parameters:
         - $ref: '#/components/parameters/locationId'
       responses:
         '200':
-          description: Локация найдена
+          description: Р›РѕРєР°С†РёСЏ РЅР°Р№РґРµРЅР°
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
         '404':
-          description: Локация не найдена
+          description: Р›РѕРєР°С†РёСЏ РЅРµ РЅР°Р№РґРµРЅР°
 
     put:
       tags: [Locations]
-      summary: Обновить локацию по ID
+      summary: РћР±РЅРѕРІРёС‚СЊ Р»РѕРєР°С†РёСЋ РїРѕ ID
       operationId: updateLocationById
       parameters:
         - $ref: '#/components/parameters/locationId'
@@ -71,67 +71,67 @@ paths:
               $ref: '#/components/schemas/LocationUpdate'
       responses:
         '200':
-          description: Локация обновлена
+          description: Р›РѕРєР°С†РёСЏ РѕР±РЅРѕРІР»РµРЅР°
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
         '400':
-          description: Переданы некорректные параметры
+          description: РџРµСЂРµРґР°РЅС‹ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹
 
     delete:
       tags: [Locations]
-      summary: Удалить локацию
+      summary: РЈРґР°Р»РёС‚СЊ Р»РѕРєР°С†РёСЋ
       operationId: deleteLocation
       parameters:
         - $ref: '#/components/parameters/locationId'
       responses:
         '204':
-          description: Локация удалена
+          description: Р›РѕРєР°С†РёСЏ СѓРґР°Р»РµРЅР°
         '404':
-          description: Локация не найдена
+          description: Р›РѕРєР°С†РёСЏ РЅРµ РЅР°Р№РґРµРЅР°
 
   /locations/{locationId}/devices/{deviceId}:
     post:
       tags: [Locations]
-      summary: Добавить устройство в локацию
+      summary: Р”РѕР±Р°РІРёС‚СЊ СѓСЃС‚СЂРѕР№СЃС‚РІРѕ РІ Р»РѕРєР°С†РёСЋ
       operationId: addDeviceToLocation
       parameters:
         - $ref: '#/components/parameters/locationId'
         - $ref: '#/components/parameters/deviceId'
       responses:
         '200':
-          description: Устройство добавлено в локацию
+          description: РЈСЃС‚СЂРѕР№СЃС‚РІРѕ РґРѕР±Р°РІР»РµРЅРѕ РІ Р»РѕРєР°С†РёСЋ
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
         '404':
-          description: Локация или устройство не найдены
+          description: Р›РѕРєР°С†РёСЏ РёР»Рё СѓСЃС‚СЂРѕР№СЃС‚РІРѕ РЅРµ РЅР°Р№РґРµРЅС‹
 
     delete:
       tags: [Locations]
-      summary: Удалить устройство из локации
+      summary: РЈРґР°Р»РёС‚СЊ СѓСЃС‚СЂРѕР№СЃС‚РІРѕ РёР· Р»РѕРєР°С†РёРё
       operationId: removeDeviceFromLocation
       parameters:
         - $ref: '#/components/parameters/locationId'
         - $ref: '#/components/parameters/deviceId'
       responses:
         '200':
-          description: Устройство удалено из локации
+          description: РЈСЃС‚СЂРѕР№СЃС‚РІРѕ СѓРґР°Р»РµРЅРѕ РёР· Р»РѕРєР°С†РёРё
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
         '404':
-          description: Локация или устройство не найдены
+          description: Р›РѕРєР°С†РёСЏ РёР»Рё СѓСЃС‚СЂРѕР№СЃС‚РІРѕ РЅРµ РЅР°Р№РґРµРЅС‹
 
 components:
   parameters:
     locationId:
       name: locationId
       in: path
-      description: ID локации
+      description: ID Р»РѕРєР°С†РёРё
       required: true
       schema:
         type: integer
@@ -140,7 +140,7 @@ components:
     deviceId:
       name: deviceId
       in: path
-      description: ID устройства
+      description: ID СѓСЃС‚СЂРѕР№СЃС‚РІР°
       required: true
       schema:
         type: integer
