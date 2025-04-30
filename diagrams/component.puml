@@ -1,0 +1,51 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Тёплый дом - диаграмма компонентов микросервиса управления устройствами
+
+Container_Boundary(system, "Экосистема Тёплый дом") {
+  Container(WebApi, "Web API", "Go", "API")
+  Container(MobileApi, "Mobile API", "Go", "API")
+  Container(AdminApi, "Admin API", "Go", "API")
+  Container(DeviceManagementService, "Сервис управления устройствами", "Go", "Осуществляет регистрацию, управление устройствами")
+  Container(DeviceIntegrationService, "Сервис интеграции с устройствами", "Go", "Отвечает за непосредственное взаимодействие с устройствами")
+  ContainerDb(TelemetryDatabase, "База телеметрии устройств", "Timescale", "Хранит телеметрию устройств")
+  ContainerDb(MainDatabase, "Основная база данных", "PostgreSQL", "Хранит основные данные экосистемы")
+}
+
+System_Ext(Notifications, "Notifications Service")
+
+Container(DeviceManagementService, "Сервис управления устройствами", "Go", "Осуществляет регистрацию, управление устройствами") {
+  Component(DeviceController, "Device Controller", "Отвечает за регистрацию и редактирование параметров устройств")
+  Component(DeviceStateController, "Device State Controller", "Отвечает за отображение и управление состоянием устройств")
+  Component(ServiceLayer, "Device Service Layer", "CRUD Бизнес-логика устройств")
+  Component(CommandHandler, "Command Handler", "Отправляет команды в сервис интеграции")
+  Component(DeviceStateServiceLayer, "Device State Service Layer", "Бизнес-логика отображения состояния и истории показаний устройств")
+  Component(MainRepositoryLayer, "Main Repository Layer", "Доступ к основной БД")
+  Component(TelemetryRepositoryLayer, "Telemetry Repository Layer", "Доступ к БД телеметрии")
+  ComponentQueue(DeviceStateQueue, "Device State Queue", "Очередь сообщений с устройств")
+}
+
+Rel(AdminApi, DeviceController, "Uses")
+Rel(AdminApi, DeviceStateController, "Uses")
+Rel(WebApi, DeviceController, "Uses")
+Rel(WebApi, DeviceStateController, "Uses")
+Rel(MobileApi, DeviceStateController, "Uses")
+Rel(DeviceStateController, Notifications, "Sends notifications")
+
+Rel(DeviceController, ServiceLayer, "Reads/writes")
+Rel(DeviceStateController, CommandHandler, "Sends commands")
+Rel(DeviceStateController, DeviceStateServiceLayer, "Reads/writes")
+Rel(DeviceStateController, DeviceStateQueue, "Reads")
+
+Rel(ServiceLayer, MainRepositoryLayer, "Reads/writes")
+Rel(DeviceStateServiceLayer, TelemetryRepositoryLayer, "Reads")
+
+Rel(MainRepositoryLayer, MainDatabase, "Reads/writes")
+Rel(TelemetryRepositoryLayer, TelemetryDatabase, "Reads")
+Rel(CommandHandler, DeviceIntegrationService, "Sends commands")
+
+Rel(DeviceIntegrationService, DeviceStateQueue, "Writes")
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+
+title Тёплый дом - диаграмма контекста as-is
+
+top to bottom direction
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(admin, "Администратор", "Администратор системы")
+Person(user, "Пользователь", "Пользователь системы")
+
+System(system, "Система управления отоплением")
+
+Rel(admin, system, "Настраивает устройства, управляет пользователями")
+Rel(user, system, "Просматривает температуру, управляет отоплением")
+
+System_Ext(sensors, "Датчики температуры", "IoT устройства")
+
+Rel(system, sensors, "Запрашивает показания")
+Rel(system, sensors, "Отправляет команды управления")
+
+@enduml
